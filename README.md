@@ -144,7 +144,7 @@ python arxiv-cli.py smi       # 查看实时监控
 ## 系统架构
 
 
-![ArxivPush Flowchart](./pic.svg)
+![ArxivPush Flowchart](./IMG_0136.PNG)
 
 ### 模块说明
 
