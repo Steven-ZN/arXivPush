@@ -133,17 +133,7 @@ Send a message starting with `/` in the Discord channel to interact with the lat
 
 ## System Architecture
 
-```mermaid
-graph TD
-    A[Discord User] -->|Messages / Commands| B[bot.py Main Controller]
-    B --> C[arxiv_fetch.py<br>Data Retrieval Layer]
-    B --> D[summarizer.py<br>Summary Generation Layer]
-    B --> E[text_processor.py<br>Text Processing Layer]
-    C --> F[state.py<br>State and File Storage]
-    D --> F
-    E --> F
-    F --> G[File System<br>Reports / Logs / Chat History]
-```
+![ArxivPush Flowchart](./IMG_0136.PNG)
 
 ### Module Descriptions
 
@@ -279,7 +269,7 @@ graph TD
 
 ------
 
-## ## License 
+## License 
 
 Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 
@@ -297,7 +287,7 @@ You are free to share and adapt this work for research and educational purposes 
 
 ---
 
-### Citation Notice / 引用声明
+### Citation Notice
 
 If you use arXivPush in academic publications, please cite as follows:
 
