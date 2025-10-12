@@ -161,8 +161,7 @@ graph TD
 
       %% Batch Processing Logic
       Search --> BatchLoop[Batch Processing Loop<br/>fetch_window]
-      BatchLoop --> |Iteration 1-N| Dedup[Duplicate Detection<br/>base_id
-  deduplication]
+      BatchLoop --> |Iteration 1-N| Dedup[Duplicate Detection<br/>base_id deduplication]
       Dedup --> Filter[Content Filtering<br/>exclude keywords]
       Filter --> Accumulate[Paper Accumulator<br/>unique_papers dict]
 
@@ -180,9 +179,9 @@ graph TD
       Summarizer --> BatchAI[Batch AI Processing<br/>4 papers per batch]
       BatchAI --> |Batch 1| Ollama1[Ollama API Call 1]
       BatchAI --> |Batch 2| Ollama2[Ollama API Call 2]
-      BatchAI --> |Batch 3| Ollama API Call 3]
-      BatchAI --> |Batch 4| Ollama API Call 4]
-      BatchAI --> |Batch 5| Ollama API Call 5]
+      BatchAI --> |Batch 3| Ollama3[Ollama API Call 3]
+      BatchAI --> |Batch 4| Ollama4[Ollama API Call 4]
+      BatchAI --> |Batch 5| Ollama5[Ollama API Call 5]
 
       %% AI Processing Results
       Ollama1 --> Clean1[Text Cleaning<br/>clean_text]
@@ -270,10 +269,6 @@ graph TD
       class BatchLoop,TargetCheck,ExpandSearch,Dedup,Filter,Accumulate batchProcess
       class BatchAI,Ollama1,Ollama2,Ollama3,Ollama4,Ollama5,TrendGen aiProcess
       class StateStorage,RawData,Report,Prompt,Chat,Status,Tracking storage
-      class
-  Scheduler,DailyCron,HourlyCron,CLI,StartCmd,StopCmd,StatusCmd,ReportCmd,RNCmd
-  control
-
 ```
 
 ### 模块说明
