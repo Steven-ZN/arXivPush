@@ -28,7 +28,7 @@
 ### 环境要求
 
   * Python 3.8+
-  * Linux / macOS / Windows
+  * Linux (原部署环境Ubuntu 24.04)
   * 内存 ≥ 4GB（推荐 8GB）
   * 硬盘空间 ≥ 10GB
 
