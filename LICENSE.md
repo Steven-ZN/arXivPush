@@ -13,9 +13,9 @@ You are free to share and adapt this work for research and educational purposes 
 
 本项目依据 知识共享署名-非商业性使用 4.0 国际许可协议 (CC BY-NC 4.0) 授权。
 您可以在 科研与教育用途 下自由共享与修改本作品，但须遵守以下条款：
-	*	Attribution / 署名 — You must give appropriate credit and provide a link to this license.
+Attribution / 署名 — You must give appropriate credit and provide a link to this license.
 您必须在引用或使用时明确署名并附上许可协议链接。
-	* NonCommercial / 非商业性使用 — You may not use the material for commercial purposes.
+NonCommercial / 非商业性使用 — You may not use the material for commercial purposes.
 您不得将本项目用于任何商业或营利性目的。
 
 ---
