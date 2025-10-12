@@ -5,12 +5,9 @@
 [![Language: 中文](https://img.shields.io/badge/Language-中文-blue.svg)](README.md)
 [![Language: English](https://img.shields.io/badge/Language-English-green.svg)](README_EN.md)
 
-</div>
+自动化的科研信息系统，用于每日从 arXiv 获取最新论文并生成中英学术日报。
+系统集成本地 LLM（Ollama）实现论文摘要趋势分析互动问答，通过 Discord 实时推送
 
-<div align="center">
-  <h3>自动化的科研信息系统，用于每日从 arXiv 获取最新论文并生成中英学术日报。
-系统集成本地 LLM（Ollama）实现论文摘要趋势分析互动问答，通过 Discord 实时推送</h3>
-</div>
 
 ---
 
