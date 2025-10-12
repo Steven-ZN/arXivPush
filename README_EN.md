@@ -281,7 +281,7 @@ Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
 You are free to share and adapt this work for research and educational purposes only, under the following terms:
 
-Attribution / 署名 — You must give appropriate credit and provide a link to this license.
+Attribution — You must give appropriate credit and provide a link to this license.
 
  You may not use the material for commercial purposes.
 
