@@ -1,0 +1,48 @@
+# arXiv Push 配置文件模板
+# 请复制此文件为 config.yaml 并填写您的实际配置
+
+# arXiv 搜索配置
+queries:
+- any:
+  - machine learning
+  - deep learning
+  - neural network
+- any:
+  - computer vision
+  - image processing
+  - object detection
+- all:
+  - transformer
+  - attention
+
+exclude:
+- survey
+- review
+
+categories:
+- cs.CV
+- cs.LG
+- eess.IV
+
+# 时间配置
+time_window_hours: 12
+timezone: America/New_York
+report_times:
+- '10:00'
+- '22:00'
+
+# Discord 配置 (请填写您的实际信息)
+discord_channel_id: YOUR_CHANNEL_ID_HERE
+
+# Ollama 配置
+ollama:
+  model: qwen2.5:7b
+  host: http://127.0.0.1:11434
+  keep_alive: 0
+
+# 可选配置
+allowed_users: []
+logging:
+  level: INFO
+  max_size: 10MB
+  backup_count: 5
