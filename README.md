@@ -145,130 +145,87 @@ python arxiv-cli.py smi       # 查看实时监控
 
 ```mermaid
 graph TD
-      %% Main Components
-      CLI[arxiv-cli.py<br/>Command Line Interface] --> Core[Core System]
-      Bot[bot.py<br/>Discord Bot] --> Core
-      Config[config.yaml<br/>Configuration] --> Core
+    CLI[arxiv-cli.py / Command Line Interface] --> Core[Core System]
+    Bot[bot.py / Discord Bot] --> Core
+    Config[config.yaml / Configuration] --> Core
 
-      %% Core Processing Pipeline
-      Core --> Fetch[arxiv_fetch.py<br/>Paper Fetching Engine]
-      Core --> State[state.py<br/>State Management]
-      Core --> Utils[utils.py<br/>Time Utilities]
+    Core --> Fetch[arxiv_fetch.py / Paper Fetching Engine]
+    Core --> State[state.py / State Management]
+    Core --> Utils[utils.py / Time Utilities]
 
-      %% Paper Fetching Algorithm
-      Fetch --> BuildQuery[Query Builder<br/>build_query]
-      BuildQuery --> |Categories + Keywords| Search[arxiv.Search<br/>API Client]
+    Fetch --> BuildQuery[Query Builder: build_query]
+    BuildQuery --> |Categories + Keywords| Search[arxiv.Search API Client]
 
-      %% Batch Processing Logic
-      Search --> BatchLoop[Batch Processing Loop<br/>fetch_window]
-      BatchLoop --> |Iteration 1-N| Dedup[Duplicate Detection<br/>base_id deduplication]
-      Dedup --> Filter[Content Filtering<br/>exclude keywords]
-      Filter --> Accumulate[Paper Accumulator<br/>unique_papers dict]
+    Search --> BatchLoop[Batch Processing Loop: fetch_window]
+    BatchLoop --> Dedup[Duplicate Detection: base_id deduplication]
+    Dedup --> Filter[Content Filtering: exclude keywords]
+    Filter --> Accumulate[Paper Accumulator: unique_papers dict]
 
-      %% Batch Algorithm Controls
-      BatchLoop --> |Check Targets| TargetCheck{Need more papers?<br/>target: 20}
-      TargetCheck --> |Yes| ExpandSearch[Expand Search<br/>need_more * 3 papers]
-      TargetCheck --> |No| SortResults[Sort by Published Date]
-      ExpandSearch --> BatchLoop
-      SortResults --> Pack[pack_papers<br/>JSON formatting]
+    BatchLoop --> TargetCheck{Need more papers? target=20}
+    TargetCheck --> |Yes| ExpandSearch[Expand Search (need_more * 3)]
+    TargetCheck --> |No| SortResults[Sort by Published Date]
+    ExpandSearch --> BatchLoop
+    SortResults --> Pack[pack_papers JSON formatting]
 
-      %% AI Processing Pipeline
-      Pack --> Summarizer[summarizer.py<br/>AI Summarization Engine]
+    Pack --> Summarizer[summarizer.py / AI Summarization Engine]
+    Summarizer --> BatchAI[Batch AI Processing: 4 papers per batch]
 
-      %% Batch AI Processing
-      Summarizer --> BatchAI[Batch AI Processing<br/>4 papers per batch]
-      BatchAI --> |Batch 1| Ollama1[Ollama API Call 1]
-      BatchAI --> |Batch 2| Ollama2[Ollama API Call 2]
-      BatchAI --> |Batch 3| Ollama3[Ollama API Call 3]
-      BatchAI --> |Batch 4| Ollama4[Ollama API Call 4]
-      BatchAI --> |Batch 5| Ollama5[Ollama API Call 5]
+    BatchAI --> Ollama1[Ollama API Call 1]
+    BatchAI --> Ollama2[Ollama API Call 2]
+    BatchAI --> Ollama3[Ollama API Call 3]
+    BatchAI --> Ollama4[Ollama API Call 4]
+    BatchAI --> Ollama5[Ollama API Call 5]
 
-      %% AI Processing Results
-      Ollama1 --> Clean1[Text Cleaning<br/>clean_text]
-      Ollama2 --> Clean2[Text Cleaning]
-      Ollama3 --> Clean3[Text Cleaning]
-      Ollama4 --> Clean4[Text Cleaning]
-      Ollama5 --> Clean5[Text Cleaning]
+    Ollama1 --> Clean1[Text Cleaning]
+    Ollama2 --> Clean2[Text Cleaning]
+    Ollama3 --> Clean3[Text Cleaning]
+    Ollama4 --> Clean4[Text Cleaning]
+    Ollama5 --> Clean5[Text Cleaning]
 
-      %% Content Assembly
-      Clean1 --> Assemble[Content Assembly]
-      Clean2 --> Assemble
-      Clean3 --> Assemble
-      Clean4 --> Assemble
-      Clean5 --> Assemble
+    Clean1 --> Assemble[Content Assembly]
+    Clean2 --> Assemble
+    Clean3 --> Assemble
+    Clean4 --> Assemble
+    Clean5 --> Assemble
 
-      Assemble --> TrendGen[Trend Analysis Generation<br/>Second Ollama Call]
-      TrendGen --> PostProcess[text_processor.py<br/>Post Processing]
+    Assemble --> TrendGen[Trend Analysis Generation (Second Ollama Call)]
+    TrendGen --> PostProcess[text_processor.py / Post Processing]
 
-      %% Post Processing Pipeline
-      PostProcess --> Extract[Extract Papers from Text]
-      Extract --> Merge[Merge with Original Data]
-      Merge --> RemoveDups[Remove Duplicates]
-      RemoveDups --> EnsureLinks[Ensure arXiv Links]
-      EnsureLinks --> FormatOutput[Format Final Output]
+    PostProcess --> Extract[Extract Papers from Text]
+    Extract --> Merge[Merge with Original Data]
+    Merge --> RemoveDups[Remove Duplicates]
+    RemoveDups --> EnsureLinks[Ensure arXiv Links]
+    EnsureLinks --> FormatOutput[Format Final Output]
 
-      %% Storage System
-      FormatOutput --> StateStorage[PeriodState Storage]
-      StateStorage --> RawData[storage/YYYY-MM-DD_AM/PM/<br/>raw_papers.json]
-      StateStorage --> Report[storage/YYYY-MM-DD_AM/PM/<br/>report_zh_en.md]
-      StateStorage --> Prompt[storage/YYYY-MM-DD_AM/PM/<br/>prompt_context.txt]
-      StateStorage --> Chat[storage/YYYY-MM-DD_AM/PM/<br/>chat/]
+    FormatOutput --> Storage[PeriodState Storage]
+    Storage --> RawData[raw_papers.json]
+    Storage --> Report[report_zh_en.md]
+    Storage --> Prompt[prompt_context.txt]
+    Storage --> Chat[chat/]
 
-      %% Status Management
-      Core --> Status[status.json<br/>Runtime Status]
-      Status --> Tracking[Paper Tracking<br/>pushed_papers.json]
+    Core --> Status[status.json / Runtime Status]
+    Status --> Tracking[pushed_papers.json]
 
-      %% Scheduling System
-      Bot --> Scheduler[APScheduler<br/>Cron Scheduler]
-      Scheduler --> |Daily Mode| DailyCron[CronTrigger<br/>10:00 & 18:00]
-      Scheduler --> |Hourly Mode| HourlyCron[CronTrigger<br/>Every Hour]
+    Bot --> Scheduler[APScheduler / Cron Scheduler]
+    Scheduler --> DailyCron[CronTrigger 10:00 & 18:00]
+    Scheduler --> HourlyCron[CronTrigger Every Hour]
+    DailyCron --> DigestGen[post_digest / Generate Report]
+    HourlyCron --> DigestGen
+    DigestGen --> DiscordChannel[Discord Messages]
 
-      %% Discord Integration
-      Bot --> DiscordAPI[Discord API]
-      DailyCron --> DigestGen[post_digest<br/>Generate Report]
-      HourlyCron --> DigestGen
-      DigestGen --> DiscordChannel[Channel Messages]
+    CLI --> StartCmd[arxiv-start / Start Service]
+    CLI --> StopCmd[arxiv-stop / Stop Service]
+    CLI --> StatusCmd[arxiv-status / Check Status]
+    CLI --> ReportCmd[arxiv-report / Manual Report]
+    CLI --> RNCmd[arxiv-rn / Run Now]
+    ReportCmd --> ManualGen[generate_report / Manual Generation]
+    RNCmd --> ManualGen
+    ManualGen --> Fetch
 
-      %% CLI Commands Flow
-      CLI --> StartCmd[arxiv-start<br/>Start Service]
-      CLI --> StopCmd[arxiv-stop<br/>Stop Service]
-      CLI --> StatusCmd[arxiv-status<br/>Check Status]
-      CLI --> ReportCmd[arxiv-report<br/>Manual Report]
-      CLI --> RNCmd[arxiv-rn<br/>Run Now]
-
-      %% Command Processing
-      ReportCmd --> ManualGen[generate_report<br/>Manual Generation]
-      RNCmd --> ManualGen
-      ManualGen --> Fetch
-
-      %% Error Handling
-      BatchLoop --> |API Errors| ErrorHandle[Error Handler]
-      ErrorHandle --> Retry{Retry Count < 3?}
-      Retry --> |Yes| BatchLoop
-      Retry --> |No| LogError[Log to status.json]
-
-      %% System Monitoring
-      Bot --> Monitor[System Monitoring]
-      Monitor --> CPU[CPU Usage]
-      Monitor --> Memory[Memory Usage]
-      Monitor --> OllamaCheck[Ollama Status Check]
-      Monitor --> SchedulerStatus[Scheduler Status]
-
-      %% Configuration Flow
-      Config --> Queries[Search Queries<br/>keywords & categories]
-      Config --> Timing[Time Settings<br/>window & timezone]
-      Config --> AIConfig[AI Settings<br/>model & host]
-      Config --> DiscordConfig[Discord Settings<br/>channel & token]
-
-      %% Data Flow Annotations
-      classDef batchProcess fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-      classDef aiProcess fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-      classDef storage fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-      classDef control fill:#fff3e0,stroke:#e65100,stroke-width:2px
-
-      class BatchLoop,TargetCheck,ExpandSearch,Dedup,Filter,Accumulate batchProcess
-      class BatchAI,Ollama1,Ollama2,Ollama3,Ollama4,Ollama5,TrendGen aiProcess
-      class StateStorage,RawData,Report,Prompt,Chat,Status,Tracking storage
+    BatchLoop --> ErrorHandle[Error Handler]
+    ErrorHandle --> Retry{Retry Count < 3?}
+    Retry --> |Yes| BatchLoop
+    Retry --> |No| LogError[Log to status.json]
 ```
 
 ### 模块说明
