@@ -1,6 +1,6 @@
 # arXivPush: 基于 Discord 的每日论文推送系统
 
-<div align="center">
+
 
 [![Language: 中文](https://img.shields.io/badge/Language-中文-blue.svg)](README.md)
 [![Language: English](https://img.shields.io/badge/Language-English-green.svg)](README_EN.md)
