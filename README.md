@@ -265,8 +265,8 @@ graph TD
 - 完全向后兼容，支持原有接口无缝集成
 
 ### Ollama 服务完整集成
+[详细内容](./v1.3.0.md)
 
-[![详细实现](arxiv_cli.md)
 - 完整的CLI命令支持：arxiv start/stop/restart/test/status
 - 实时状态监控和智能错误处理
 - 支持自定义主机地址和模型选择
