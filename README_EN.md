@@ -1,9 +1,12 @@
 # arXivPush: Daily Paper Push System Based on Discord
 
-**arXivPush** is an automated research information system that retrieves the latest papers from arXiv every day and generates bilingual (Chinese-English) academic daily reports.
- The system integrates a local LLM (Ollama) for paper summarization, trend analysis, and interactive Q&A, and pushes updates to Discord in real time.
+[![Language: 中文](https://img.shields.io/badge/Language-中文-blue.svg)](README.md)
+[![Language: English](https://img.shields.io/badge/Language-English-green.svg)](README_EN.md)
 
-------
+**arXivPush** is an automated research information system that retrieves the latest papers from arXiv every day and generates bilingual (Chinese-English) academic daily reports.
+The system integrates a local LLM (Ollama) for paper summarization, trend analysis, and interactive Q&A, and pushes updates to Discord in real time.
+
+---
 
 ## Example Output
 
@@ -11,24 +14,24 @@ An automatically generated report from the **ArxivPush** system (only a partial 
 
 ![ArxivPush Demo Output](./demo.png)
 
-------
+---
 
 ## Quick Deployment Guide
 
 ### Environment Requirements
 
-- Python 3.8+
-- Linux / macOS / Windows
-- Memory ≥ 4GB (8GB recommended)
-- Disk space ≥ 10GB
+* Python 3.8+
+* Linux (original deployment environment Ubuntu 24.04)
+* Memory ≥ 4GB (8GB recommended)
+* Disk space ≥ 10GB
 
 ### External Dependencies
 
-- **Ollama**: Local large language model runtime
-- **Discord Bot Token**: Obtainable from the Discord Developer Portal
-- **Discord Channel ID**: The unique ID of the target push channel
+* **Ollama**: Local large language model runtime
+* **Discord Bot Token**: Obtainable from the Discord Developer Portal
+* **Discord Channel ID**: The unique ID of the target push channel
 
-------
+---
 
 ### Installation
 
@@ -54,7 +57,7 @@ ollama serve
 
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Create an application → Enable Bot → Obtain Token
-3. Enable “Message Content Intent”
+3. Enable "Message Content Intent"
 4. Invite the Bot to your server
 5. Get the Channel ID (right-click the channel → Copy ID)
 
@@ -96,7 +99,7 @@ python bot.py
 nohup python3 bot.py > bot_output.log 2>&1 &
 ```
 
-------
+---
 
 ## Running and Usage
 
@@ -129,7 +132,7 @@ Send a message starting with `/` in the Discord channel to interact with the lat
 /Explain the main innovation of the first paper.
 ```
 
-------
+---
 
 ## System Architecture
 
@@ -143,7 +146,7 @@ Send a message starting with `/` in the Discord channel to interact with the lat
 - **text_processor.py**: Formats text and generates APA6 citations
 - **state.py**: Persistent management, storing data for all report periods
 
-------
+---
 
 ## Algorithms and Implementation Details
 
@@ -200,7 +203,7 @@ def generate_apa6_citation(paper, index):
     return f"[{index}] {authors} ({year}). {title}. arXiv ID: {arxiv_id}. {link}"
 ```
 
-------
+---
 
 ## System Workflow
 
@@ -228,7 +231,7 @@ graph TD
     E --> F[Send to Discord and Log Conversation]
 ```
 
-------
+---
 
 ## Performance and Optimization
 
@@ -238,7 +241,7 @@ graph TD
 - **Segmented Push**: Splits long messages to ensure Discord readability
 - **Caching Strategy**: Avoids redundant API calls, improving efficiency
 
-------
+---
 
 ## Configuration and Extension
 
@@ -247,9 +250,30 @@ graph TD
 - Supports multiple time zones and report cycles
 - Customizable report templates (Concise / Conference / Topic-focused)
 
-------
+---
 
 ## Version Updates
+
+### v1.3.0 (2025-10-13)
+
+### Time-Aware Iterative Search Architecture
+
+- Dynamic time window expansion mechanism based on current time backward search
+- Prioritizes latest papers with descending submission date order
+- Intelligent deduplication and fallback strategies ensuring system stability
+
+### Ollama Service Complete Integration
+
+- Complete CLI command support: arxiv start/stop/restart/test/status
+- Real-time status monitoring and intelligent error handling
+- Support for custom host addresses and model selection
+
+### Performance Optimization
+
+- Typically achieves 20 papers target in 2-3 time windows
+- Paper timeliness controlled within 3-7 days
+- Intelligent deduplication selects optimal papers from 30+ candidates
+- Complete single search time under 30 seconds
 
 ### v1.2.0 (2025-10-12)
 
@@ -267,9 +291,9 @@ graph TD
 
 - Initial release: Daily push, summarization, and interactive Q&A
 
-------
+---
 
-## License 
+## License
 
 Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
 
@@ -285,7 +309,6 @@ Attribution — You must give appropriate credit and provide a link to this lice
 
  You may not use the material for commercial purposes.
 
-
 ---
 
 ### Citation Notice
@@ -298,11 +321,11 @@ https://github.com/Steven-ZN/arXivPush
 
 ---
 
-### Restrictions 
+### Restrictions
 
 This software and its outputs are intended for non-commercial academic and research use only.
 
 Redistribution, resale, or integration into commercial systems is strictly prohibited.
 
-
+---
 
