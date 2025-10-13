@@ -6,7 +6,6 @@
 在linux环境部署的自动化的科研信息系统，用于每日从 arXiv 获取最新论文并生成中英学术日报。
 系统集成本地 LLM（通过Ollama运行）实现论文摘要趋势分析互动问答，通过 Discord 实时推送
 
-API版本由 Jiaxuan Zou 基于 v1.1.0 开发，支持通过 API 实现在线调用LLM。<https://github.com/JiaxuanZou0714/arxivBOT>
 
 ---
 
