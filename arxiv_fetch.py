@@ -67,10 +67,10 @@ def iterative_time_aware_search(cfg, target=20, max_days=7):
     cats = cfg.get("categories", ["cs.AI", "cs.LG", "cs.CL", "cs.CV"])
     excludes = [e.lower() for e in cfg.get("exclude", [])]
 
-    print(f"🎯 启动时间感知迭代搜索")
-    print(f"📅 当前日期: {current_date}")
-    print(f"🎯 目标论文: {target} 篇")
-    print(f"🔍 最大搜索范围: {max_days} 天")
+    print(f" 启动时间感知迭代搜索")
+    print(f" 当前日期: {current_date}")
+    print(f" 目标论文: {target} 篇")
+    print(f" 最大搜索范围: {max_days} 天")
     print("=" * 60)
 
     while len(collected) < target and time_window <= max_days:
@@ -78,7 +78,7 @@ def iterative_time_aware_search(cfg, target=20, max_days=7):
         end_date = current_date - timedelta(days=time_window-1)
         start_date = current_date - timedelta(days=time_window)
 
-        print(f"🔍 [{time_window}/{max_days}] 搜索窗口: {start_date} ~ {end_date}")
+        print(f" [{time_window}/{max_days}] 搜索窗口: {start_date} ~ {end_date}")
 
         try:
             # 构建时间窗口查询
@@ -116,20 +116,20 @@ def iterative_time_aware_search(cfg, target=20, max_days=7):
                     continue
 
                 batch_new_papers.append(r)
-                print(f"📄 找到论文: {r.get_short_id()} - {r.title[:50]}...")
+                print(f" 找到论文: {r.get_short_id()} - {r.title[:50]}...")
 
             # 添加到收集列表
             collected.extend(batch_new_papers)
 
-            print(f"✅ 窗口 {time_window}: 新增 {len(batch_new_papers)} 篇, 累计 {len(collected)} 篇")
+            print(f" 窗口 {time_window}: 新增 {len(batch_new_papers)} 篇, 累计 {len(collected)} 篇")
 
             # 检查是否达到目标
             if len(collected) >= target:
-                print(f"🎉 已达到目标 {target} 篇论文!")
+                print(f" 已达到目标 {target} 篇论文!")
                 break
 
         except Exception as e:
-            print(f"❌ 窗口 {time_window} 搜索失败: {e}")
+            print(f" 窗口 {time_window} 搜索失败: {e}")
             # 继续下一个窗口，不中断整个搜索过程
 
         # 动态扩展时间窗口
@@ -144,21 +144,21 @@ def iterative_time_aware_search(cfg, target=20, max_days=7):
     final_results = collected[:target]
 
     print("\n" + "=" * 60)
-    print("📊 迭代搜索完成!")
+    print(" 迭代搜索完成!")
     print(f"   - 搜索窗口数: {time_window - 1}")
     print(f"   - 总论文数: {len(collected)}")
     print(f"   - 最终选取: {len(final_results)} 篇")
 
     if len(final_results) < target:
-        print(f"   ⚠️  未达到目标，只找到 {len(final_results)} 篇论文")
+        print(f"     未达到目标，只找到 {len(final_results)} 篇论文")
     else:
-        print(f"   ✅ 成功达到目标 {target} 篇论文")
+        print(f"    成功达到目标 {target} 篇论文")
 
     # 显示最新论文的发布时间范围
     if final_results:
         latest = final_results[0].published.astimezone(tz_local)
         oldest = final_results[-1].published.astimezone(tz_local)
-        print(f"   📅 时间范围: {oldest.strftime('%Y-%m-%d')} ~ {latest.strftime('%Y-%m-%d')}")
+        print(f"    时间范围: {oldest.strftime('%Y-%m-%d')} ~ {latest.strftime('%Y-%m-%d')}")
 
     return final_results
 
@@ -170,7 +170,7 @@ def fetch_window(cfg, since_dt_local, now_local):
     max_items = cfg.get("digest_max_items", 20)
 
     # 使用新的时间感知迭代搜索
-    print(f"🚀 使用时间感知迭代搜索 (替代传统搜索)")
+    print(f" 使用时间感知迭代搜索 (替代传统搜索)")
 
     try:
         results = iterative_time_aware_search(
@@ -180,7 +180,7 @@ def fetch_window(cfg, since_dt_local, now_local):
         )
         return results
     except Exception as e:
-        print(f"❌ 时间感知搜索失败，回退到传统搜索: {e}")
+        print(f" 时间感知搜索失败，回退到传统搜索: {e}")
 
         # 回退到简化的传统搜索
         return fallback_search(cfg, max_items)
@@ -195,7 +195,7 @@ def fallback_search(cfg, max_items):
 
     tz_local = gettz(cfg.get("timezone", "America/New_York"))
 
-    print(f"🔄 执行回退搜索方案...")
+    print(f" 执行回退搜索方案...")
 
     search = arxiv.Search(
         query="cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.CV",
@@ -227,11 +227,11 @@ def fallback_search(cfg, max_items):
             if len(filtered_papers) >= max_items:
                 break
 
-        print(f"✅ 回退搜索完成: {len(filtered_papers)} 篇论文")
+        print(f" 回退搜索完成: {len(filtered_papers)} 篇论文")
         return filtered_papers
 
     except Exception as e:
-        print(f"❌ 回退搜索也失败: {e}")
+        print(f" 回退搜索也失败: {e}")
         return []
 
 def load_pushed_papers():
@@ -261,9 +261,9 @@ def save_pushed_papers(paper_ids):
     try:
         with open(pushed_file, "w") as f:
             json.dump({"papers": list(all_ids)}, f)
-        print(f"💾 已保存 {len(paper_ids)} 个新论文ID到推送记录")
+        print(f" 已保存 {len(paper_ids)} 个新论文ID到推送记录")
     except Exception as e:
-        print(f"⚠️ 保存推送记录失败: {e}")
+        print(f" 保存推送记录失败: {e}")
 
 def mark_papers_as_pushed(papers):
     """标记论文为已推送"""
@@ -296,5 +296,5 @@ def pack_papers(cfg, papers):
             "abstract": abs_text,
         })
 
-    print(f"📊 论文数量: {len(data)}")
+    print(f" 论文数量: {len(data)}")
     return data

@@ -133,7 +133,7 @@ def split_message(text, limit=1800):
 async def start_service(ctx):
     """启动服务"""
     if BOT_STATUS["running"]:
-        await ctx.send("⚠️ 服务已经在运行中")
+        await ctx.send(" 服务已经在运行中")
         return
 
     try:
@@ -141,15 +141,15 @@ async def start_service(ctx):
         BOT_STATUS["running"] = True
         BOT_STATUS["start_time"] = datetime.now()
         logger.info("服务已启动")
-        await ctx.send("✅ arXiv Push 服务已启动")
+        await ctx.send(" arXiv Push 服务已启动")
     except Exception as e:
-        await ctx.send(f"❌ 启动失败: {str(e)}")
+        await ctx.send(f" 启动失败: {str(e)}")
 
 @bot.command(name="p-stop", help="停止 arXiv push 服务")
 async def stop_service(ctx):
     """停止服务"""
     if not BOT_STATUS["running"]:
-        await ctx.send("⚠️ 服务未在运行")
+        await ctx.send(" 服务未在运行")
         return
 
     try:
@@ -158,12 +158,12 @@ async def stop_service(ctx):
         logger.info("服务已停止")
         await ctx.send("⏹️ arXiv Push 服务已停止")
     except Exception as e:
-        await ctx.send(f"❌ 停止失败: {str(e)}")
+        await ctx.send(f" 停止失败: {str(e)}")
 
 @bot.command(name="p-restart", help="重启 arXiv push 服务")
 async def restart_service(ctx):
     """重启服务"""
-    await ctx.send("🔄 正在重启服务...")
+    await ctx.send(" 正在重启服务...")
     try:
         stop_scheduler()
         await asyncio.sleep(2)
@@ -171,9 +171,9 @@ async def restart_service(ctx):
         BOT_STATUS["running"] = True
         BOT_STATUS["start_time"] = datetime.now()
         logger.info("服务已重启")
-        await ctx.send("✅ arXiv Push 服务已重启")
+        await ctx.send(" arXiv Push 服务已重启")
     except Exception as e:
-        await ctx.send(f"❌ 重启失败: {str(e)}")
+        await ctx.send(f" 重启失败: {str(e)}")
 
 @bot.command(name="p-status", help="查看服务状态")
 async def status(ctx):
@@ -181,29 +181,29 @@ async def status(ctx):
     uptime = datetime.now() - BOT_STATUS["start_time"]
     uptime_str = str(uptime).split('.')[0]  # 去掉微秒
 
-    status_emoji = "🟢" if BOT_STATUS["running"] else "🔴"
+    status_emoji = "" if BOT_STATUS["running"] else ""
 
     embed = discord.Embed(
         title=f"{status_emoji} arXiv Push 服务状态",
         color=discord.Color.green() if BOT_STATUS["running"] else discord.Color.red()
     )
 
-    embed.add_field(name="🚀 运行状态", value="运行中" if BOT_STATUS["running"] else "已停止", inline=False)
-    embed.add_field(name="⏱️ 运行时间", value=uptime_str, inline=True)
-    embed.add_field(name="📊 生成报告数", value=str(BOT_STATUS["total_reports"]), inline=True)
-    embed.add_field(name="🕐 时区", value=TZNAME, inline=True)
-    embed.add_field(name="📅 报送时间", value=", ".join(CFG.get("report_times", [])), inline=True)
-    embed.add_field(name="🔍 时间窗口", value=f"{WINDOW_H} 小时", inline=True)
+    embed.add_field(name=" 运行状态", value="运行中" if BOT_STATUS["running"] else "已停止", inline=False)
+    embed.add_field(name=" 运行时间", value=uptime_str, inline=True)
+    embed.add_field(name=" 生成报告数", value=str(BOT_STATUS["total_reports"]), inline=True)
+    embed.add_field(name=" 时区", value=TZNAME, inline=True)
+    embed.add_field(name=" 报送时间", value=", ".join(CFG.get("report_times", [])), inline=True)
+    embed.add_field(name=" 时间窗口", value=f"{WINDOW_H} 小时", inline=True)
 
     if BOT_STATUS["last_fetch"]:
-        embed.add_field(name="📥 最后获取", value=BOT_STATUS["last_fetch"].strftime("%Y-%m-%d %H:%M:%S"), inline=True)
+        embed.add_field(name=" 最后获取", value=BOT_STATUS["last_fetch"].strftime("%Y-%m-%d %H:%M:%S"), inline=True)
     if BOT_STATUS["last_report"]:
-        embed.add_field(name="📤 最后报告", value=BOT_STATUS["last_report"].strftime("%Y-%m-%d %H:%M:%S"), inline=True)
+        embed.add_field(name=" 最后报告", value=BOT_STATUS["last_report"].strftime("%Y-%m-%d %H:%M:%S"), inline=True)
 
     if BOT_STATUS["errors"]:
         recent_errors = BOT_STATUS["errors"][-3:]  # 最近3个错误
         error_text = "\n".join([f"• {e['time'].strftime('%H:%M:%S')}: {e['error']}" for e in recent_errors])
-        embed.add_field(name="⚠️ 最近错误", value=error_text, inline=False)
+        embed.add_field(name=" 最近错误", value=error_text, inline=False)
 
     await ctx.send(embed=embed)
 
@@ -211,17 +211,17 @@ async def status(ctx):
 async def manual_report(ctx, which: str):
     """手动生成报告"""
     if which.lower() not in ["am", "pm"]:
-        await ctx.send("❌ 请指定 'am' 或 'pm'")
+        await ctx.send(" 请指定 'am' 或 'pm'")
         return
 
     label = "早报" if which.lower() == "am" else "晚报"
-    await ctx.send(f"🔄 正在生成{label}...")
+    await ctx.send(f" 正在生成{label}...")
 
     success = await post_digest(label, manual=True)
     if success:
-        await ctx.send(f"✅ {label}生成完成")
+        await ctx.send(f" {label}生成完成")
     else:
-        await ctx.send("❌ 生成失败，请检查日志")
+        await ctx.send(" 生成失败，请检查日志")
 
 @bot.command(name="p-config", help="配置管理: get | set <key> <value>")
 async def config_manage(ctx, action: str, key: str = None, value: str = None):
@@ -229,9 +229,9 @@ async def config_manage(ctx, action: str, key: str = None, value: str = None):
     if action == "get":
         if key:
             if key in CFG:
-                await ctx.send(f"📋 {key}: `{CFG[key]}`")
+                await ctx.send(f" {key}: `{CFG[key]}`")
             else:
-                await ctx.send(f"❌ 配置项 '{key}' 不存在")
+                await ctx.send(f" 配置项 '{key}' 不存在")
         else:
             # 显示所有配置
             config_text = json.dumps(CFG, ensure_ascii=False, indent=2)
@@ -239,9 +239,9 @@ async def config_manage(ctx, action: str, key: str = None, value: str = None):
                 # 配置太长，分文件显示
                 with open("current_config.yaml", "w", encoding="utf-8") as f:
                     yaml.safe_dump(CFG, f, allow_unicode=True, sort_keys=False)
-                await ctx.send("📋 配置文件太长，已保存到 `current_config.yaml`")
+                await ctx.send(" 配置文件太长，已保存到 `current_config.yaml`")
             else:
-                await ctx.send(f"📋 当前配置:\n```yaml\n{config_text}\n```")
+                await ctx.send(f" 当前配置:\n```yaml\n{config_text}\n```")
 
     elif action == "set" and key and value:
         try:
@@ -258,14 +258,14 @@ async def config_manage(ctx, action: str, key: str = None, value: str = None):
             with open("config.yaml", "w", encoding="utf-8") as f:
                 yaml.safe_dump(CFG, f, allow_unicode=True, sort_keys=False)
 
-            await ctx.send(f"✅ 已更新 {key}: `{value}`")
+            await ctx.send(f" 已更新 {key}: `{value}`")
             logger.info(f"配置已更新: {key} = {value}")
 
         except Exception as e:
-            await ctx.send(f"❌ 更新失败: {str(e)}")
+            await ctx.send(f" 更新失败: {str(e)}")
 
     else:
-        await ctx.send("❌ 语法错误，使用: `arxiv-p-config get|set <key> <value>`")
+        await ctx.send(" 语法错误，使用: `arxiv-p-config get|set <key> <value>`")
 
 @bot.command(name="p-logs", help="查看日志: [lines=10]")
 async def show_logs(ctx, lines: int = 10):
@@ -280,12 +280,12 @@ async def show_logs(ctx, lines: int = 10):
         if len(log_text) > 1900:
             log_text = log_text[-1900:] + "\n... (日志被截断)"
 
-        await ctx.send(f"📄 最近 {len(recent_lines)} 行日志:\n```log\n{log_text}\n```")
+        await ctx.send(f" 最近 {len(recent_lines)} 行日志:\n```log\n{log_text}\n```")
 
     except FileNotFoundError:
-        await ctx.send("❌ 日志文件不存在")
+        await ctx.send(" 日志文件不存在")
     except Exception as e:
-        await ctx.send(f"❌ 读取日志失败: {str(e)}")
+        await ctx.send(f" 读取日志失败: {str(e)}")
 
 def start_scheduler():
     """启动调度器"""
@@ -329,33 +329,33 @@ async def smi(ctx):
     disk = psutil.disk_usage('/')
 
     # Ollama 状态检查
-    ollama_status = "🟢 运行中"
+    ollama_status = " 运行中"
     ollama_model = CFG.get("ollama", {}).get("model", "未知")
     try:
         import requests
         response = requests.get(f"{CFG.get('ollama', {}).get('host', 'http://127.0.0.1:11434')}/api/tags", timeout=5)
         if response.status_code != 200:
-            ollama_status = "🔴 无响应"
+            ollama_status = " 无响应"
     except:
-        ollama_status = "🔴 连接失败"
+        ollama_status = " 连接失败"
 
     # 调度器状态
-    scheduler_status = "🟢 运行中" if scheduler.running else "🔴 已停止"
+    scheduler_status = " 运行中" if scheduler.running else " 已停止"
     jobs = scheduler.get_jobs()
 
     # 创建状态面板
     embed = discord.Embed(
-        title="🖥️  arXiv Push 实时状态",
+        title="  arXiv Push 实时状态",
         description=f"**版本**: v1.0 | **进程ID**: {os.getpid()}",
         color=discord.Color.blue()
     )
 
     # 服务状态
-    service_status = "🟢 运行中" if BOT_STATUS["running"] else "🔴 已停止"
+    service_status = " 运行中" if BOT_STATUS["running"] else " 已停止"
     uptime = datetime.now() - BOT_STATUS["start_time"]
 
     embed.add_field(
-        name="🚀 服务状态",
+        name=" 服务状态",
         value=f"**状态**: {service_status}\n**运行时间**: {str(uptime).split('.')[0]}\n**生成报告**: {BOT_STATUS['total_reports']} 次",
         inline=True
     )
@@ -363,43 +363,43 @@ async def smi(ctx):
     # 调度器状态
     job_info = "\n".join([f"• {job.name}" for job in jobs]) if jobs else "无任务"
     embed.add_field(
-        name="⏰ 调度器",
+        name=" 调度器",
         value=f"**状态**: {scheduler_status}\n**任务数**: {len(jobs)}\n**任务列表**:\n{job_info}",
         inline=True
     )
 
     # 系统资源
     embed.add_field(
-        name="💻 系统资源",
+        name=" 系统资源",
         value=f"**CPU**: {cpu_percent}%\n**内存**: {memory.percent}% ({memory.used//1024//1024}MB/{memory.total//1024//1024}MB)\n**磁盘**: {disk.percent}% ({disk.used//1024//1024//1024}GB/{disk.total//1024//1024//1024}GB)",
         inline=True
     )
 
     # Ollama 状态
     embed.add_field(
-        name="🤖 Ollama",
+        name=" Ollama",
         value=f"**状态**: {ollama_status}\n**模型**: {ollama_model}\n**接口**: {CFG.get('ollama', {}).get('host', 'http://127.0.0.1:11434')}",
         inline=True
     )
 
     # 网络状态
     embed.add_field(
-        name="🌐 网络",
-        value=f"**Discord**: 🟢 已连接\n**频道ID**: {CHANNEL_ID}\n**前缀**: arxiv-",
+        name=" 网络",
+        value=f"**Discord**:  已连接\n**频道ID**: {CHANNEL_ID}\n**前缀**: arxiv-",
         inline=True
     )
 
     # 最近活动
     recent_activity = []
     if BOT_STATUS["last_fetch"]:
-        recent_activity.append(f"📥 最后获取: {BOT_STATUS['last_fetch'].strftime('%H:%M:%S')}")
+        recent_activity.append(f" 最后获取: {BOT_STATUS['last_fetch'].strftime('%H:%M:%S')}")
     if BOT_STATUS["last_report"]:
-        recent_activity.append(f"📤 最后报告: {BOT_STATUS['last_report'].strftime('%H:%M:%S')}")
+        recent_activity.append(f" 最后报告: {BOT_STATUS['last_report'].strftime('%H:%M:%S')}")
     if BOT_STATUS["errors"]:
-        recent_activity.append(f"⚠️ 错误数: {len(BOT_STATUS['errors'])}")
+        recent_activity.append(f" 错误数: {len(BOT_STATUS['errors'])}")
 
     embed.add_field(
-        name="📈 最近活动",
+        name=" 最近活动",
         value="\n".join(recent_activity) if recent_activity else "暂无活动",
         inline=False
     )
@@ -415,24 +415,24 @@ async def run_now(ctx, which: str = None):
         which = "am" if now_local.hour < 12 else "pm"
 
     if which.lower() not in ["am", "pm"]:
-        await ctx.send("❌ 请指定 'am' 或 'pm'")
+        await ctx.send(" 请指定 'am' 或 'pm'")
         return
 
     label = "早报" if which.lower() == "am" else "晚报"
 
     # 发送正在处理的提示
-    msg = await ctx.send(f"🚀 **立即执行中** - 正在生成{label}...\n⏳ 可能需要1-3分钟，请稍候...")
+    msg = await ctx.send(f" **立即执行中** - 正在生成{label}...\n 可能需要1-3分钟，请稍候...")
 
     try:
         success = await post_digest(label, manual=True)
 
         if success:
-            await msg.edit(content=f"✅ **执行完成** - {label}已生成并推送！\n🎯 使用 `arxiv-smi` 查看详细状态")
+            await msg.edit(content=f" **执行完成** - {label}已生成并推送！\n 使用 `arxiv-smi` 查看详细状态")
         else:
-            await msg.edit(content=f"❌ **执行失败** - {label}生成失败\n🔍 使用 `arxiv-p-logs` 查看错误日志")
+            await msg.edit(content=f" **执行失败** - {label}生成失败\n 使用 `arxiv-p-logs` 查看错误日志")
 
     except Exception as e:
-        await msg.edit(content=f"💥 **执行异常** - {str(e)}\n🔍 使用 `arxiv-p-logs` 查看详细错误信息")
+        await msg.edit(content=f" **执行异常** - {str(e)}\n 使用 `arxiv-p-logs` 查看详细错误信息")
 
 @bot.command(name="p-help", help="显示帮助信息")
 async def help_cmd(ctx):
@@ -488,7 +488,7 @@ async def on_ready():
     try:
         channel = bot.get_channel(CHANNEL_ID)
         if channel:
-            await channel.send(f"🚀 **arXiv Push 服务已启动**\n🤖 **Bot**: {bot.user.mention}\n⏰ **时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n💡 **帮助**: 使用 `arxiv-help` 查看所有命令")
+            await channel.send(f" **arXiv Push 服务已启动**\n **Bot**: {bot.user.mention}\n **时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n **帮助**: 使用 `arxiv-help` 查看所有命令")
     except Exception as e:
         logger.error(f"发送启动消息失败: {e}")
 
@@ -520,14 +520,14 @@ async def on_message(message: discord.Message):
         now_local = now_in_tz(TZNAME)
         name = latest_active_period(now_local, hours=WINDOW_H)
         if not name:
-            await message.channel.send("❌ 当前没有可对话的报告，请先生成报告")
+            await message.channel.send(" 当前没有可对话的报告，请先生成报告")
             return  # 超出会话有效期
 
         st = PeriodState(name)
         ctx_text = st.prompt_context.read_text(encoding="utf-8") if st.prompt_context.exists() else ""
 
         if not ctx_text.strip():
-            await message.channel.send("❌ 没有找到报告上下文，请先生成报告")
+            await message.channel.send(" 没有找到报告上下文，请先生成报告")
             return  # 没有上下文
 
         st.append_chat("user", user_msg)
@@ -561,7 +561,7 @@ async def on_message(message: discord.Message):
         traceback.print_exc()
 
         # 不发送错误消息以避免刷屏
-        # await message.channel.send("❌ 消息处理失败，请稍后重试")
+        # await message.channel.send(" 消息处理失败，请稍后重试")
 
 def split(s, limit=1800):
     """分割长消息"""
