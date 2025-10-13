@@ -1,7 +1,5 @@
 # arXivPush: 基于 Discord 的每日论文推送系统
 
-
-
 [![Language: 中文](https://img.shields.io/badge/Language-中文-blue.svg)](README.md)
 [![Language: English](https://img.shields.io/badge/Language-English-green.svg)](README_EN.md)
 
@@ -13,7 +11,7 @@
 
 **arXivPush** is an automated research information system that retrieves the latest papers from arXiv every day and generates bilingual (Chinese-English) academic daily reports.
  The system integrates a local LLM (Ollama) for paper summarization, trend analysis, and interactive Q&A, and pushes updates to Discord in real time.
- 
+
 ## 部分输出示例
 
 **ArxivPush** 系统自动生成的日报示例（由于消息过长，仅展示部分内容）。
@@ -257,6 +255,29 @@ graph TD
 
 ## 版本更新
 
+### v1.3.0 （2025-10-13）
+
+### 时间感知迭代搜索架构
+
+- 动态时间窗口扩展机制，基于当前时间倒推搜索
+- 优先获取最新论文，按提交时间降序排列
+- 智能去重和回退策略，确保系统稳定性
+- 完全向后兼容，支持原有接口无缝集成
+
+### Ollama 服务完整集成
+
+[![详细实现](arxiv_cli.md)
+- 完整的CLI命令支持：arxiv start/stop/restart/test/status
+- 实时状态监控和智能错误处理
+- 支持自定义主机地址和模型选择
+
+### 性能优化
+
+- 通常2-3个时间窗口即可达到20篇论文目标
+- 论文时效性控制在3-7天内
+- 智能去重从30+候选中精选最优论文
+- 单次完整搜索时间小于30秒
+
 ### v1.2.0（2025-10-12）
 
 * 实现智能批处理摘要生成
@@ -308,8 +329,11 @@ https://github.com/Steven-ZN/arXivPush
 ---
 
 ### Restrictions / 限制声明
+
 	•	This software and its outputs are intended for non-commercial academic and research use only.
 	•	Redistribution, resale, or integration into commercial systems is strictly prohibited.
 
 本软件及其输出结果仅限 非商业学术研究用途。
 禁止任何形式的商业再分发、销售或嵌入付费系统。
+
+---
