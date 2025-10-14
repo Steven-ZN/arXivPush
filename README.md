@@ -40,7 +40,7 @@
 #### 克隆与安装依赖
 
 ```
-git clone <repository-url>
+git clone https://github.com/Steven-ZN/arXivPush
 cd arxivpush
 pip install -r requirements.txt
 ```
