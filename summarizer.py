@@ -1,13 +1,12 @@
 # summarizer.py
 import os, requests, time
 
-# 通过 HTTP 调用 Ollama，本地已安装 `ollama` 并拉取 deepseek 模型。
-# 关键点：设置 OLLAMA_KEEP_ALIVE=0，使其在请求完成后立即"休眠/退出"。
+# 通过 HTTP 调用 Ollama，本地已安装 `ollama` 并拉取 qwen 模型。
+# 设置 OLLAMA_KEEP_ALIVE=0，使其在请求完成后立即"休眠/退出"。
 
 PROMPT_TEMPLATE = """
 请严格按照以下模板生成「arXiv日报」，必须基于提供的真实论文数据，不能编造任何内容：
 
-日报有用记得关注哦，你的鼓励真的很重要～
 
 ---
 
