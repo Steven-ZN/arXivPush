@@ -72,7 +72,7 @@ async def post_digest(period_label: str, manual=False):
         # 如果没有论文，不生成报告
         if len(data) == 0:
             logger.info("没有获取到论文，跳过报告生成")
-            await channel.send(f"📭 {period_label} | 本次时间窗口内没有新论文")
+            await channel.send(f" {period_label} | 本次时间窗口内没有新论文")
             return True
 
         period = fmt_period(now_local)
@@ -92,7 +92,7 @@ async def post_digest(period_label: str, manual=False):
         st.save_prompt(prompt_ctx)
 
         # 发送到 Discord
-        prefix = "🚨" if manual else "📮"
+        prefix = "" if manual else ""
         title = f"{prefix} {period_label} | arXiv Digest ({since_local.strftime('%Y-%m-%d %H:%M')} ~ {now_local.strftime('%H:%M')} {TZNAME})"
         await channel.send(title)
 
@@ -156,7 +156,7 @@ async def stop_service(ctx):
         stop_scheduler()
         BOT_STATUS["running"] = False
         logger.info("服务已停止")
-        await ctx.send("⏹️ arXiv Push 服务已停止")
+        await ctx.send(" arXiv Push 服务已停止")
     except Exception as e:
         await ctx.send(f" 停止失败: {str(e)}")
 
