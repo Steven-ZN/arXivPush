@@ -110,7 +110,7 @@ nohup python3 bot.py > bot_output.log 2>&1 &
 | 命令                     | 说明                |
 | ------------------------ | ------------------- |
 | arxiv-smi                | 查看系统状态        |
-| arxiv-rn am / pm         | 立即生成早报 / 晚报 |
+| arxiv-rn 	               | 立即生成            |
 | arxiv-p-start            | 启动服务            |
 | arxiv-p-stop             | 停止服务            |
 | arxiv-p-config get / set | 查看或修改配置      |
