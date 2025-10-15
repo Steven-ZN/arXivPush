@@ -105,15 +105,12 @@ nohup python3 bot.py > bot_output.log 2>&1 &
 
 ## 运行与使用
 
-###  Discord 命令（部分需要手动启用）
+###  Discord 命令
 
 | 命令                     | 说明                |
 | ------------------------ | ------------------- |
 | arxiv-smi                | 查看系统状态        |
 | arxiv-rn 	               | 立即生成            |
-| arxiv-p-start            | 启动服务            |
-| arxiv-p-stop             | 停止服务            |
-| arxiv-p-config get / set | 查看或修改配置      |
 | arxiv-p-logs [行数]      | 查看日志            |
 | arxiv-help               | 查看帮助            |
 
@@ -121,7 +118,7 @@ nohup python3 bot.py > bot_output.log 2>&1 &
 
 ```
 python arxiv-cli.py start     # 启动服务
-python arxiv-cli.py rn pm     # 手动生成晚报
+python arxiv-cli.py rn pm     # 手动生成
 python arxiv-cli.py smi       # 查看实时监控
 ```
 
